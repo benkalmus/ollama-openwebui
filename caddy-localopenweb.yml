@@ -1,0 +1,17 @@
+services:
+  nginx:
+    image: caddy:latest
+    container_name: ollama-caddy-localopenweb
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080"
+    volumes:
+      - ./caddy/Caddyfile-localopenweb:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    restart: always
+
+volumes:
+  caddy_data:
+  caddy_config:
