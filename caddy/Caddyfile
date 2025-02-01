@@ -1,0 +1,3 @@
+http://manchesteriswindy.ddns.net {
+    reverse_proxy http://11.0.0.2:8080
+}
