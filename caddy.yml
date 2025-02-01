@@ -10,13 +10,8 @@ services:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./caddy/data:/data
       - ./caddy/config:/config
-    networks:
-      - wg-network
     restart: always
 
-networks:
-  wg-network:
-    external: true  # This assumes you already have a WireGuard network setup in Docker
 
 
 volumes:

@@ -1,3 +1,10 @@
-http://manchesteriswindy.ddns.net {
-    reverse_proxy http://11.0.0.2:8080
+manchesteriswindy.ddns.net, localhost {
+
+    reverse_proxy 11.0.0.2:8080 {
+        transport http {
+                versions h1 h2
+        }
+        header_up Connection {>Connection}
+        header_up Upgrade {>Upgrade}
+    }
 }
