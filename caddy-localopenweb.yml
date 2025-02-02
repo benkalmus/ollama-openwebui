@@ -7,13 +7,13 @@ services:
       - "443:443"
     volumes:
       - ./caddy/Caddyfile-localopenweb:/etc/caddy/Caddyfile
-      - ./caddy/data2:/data
-      - ./caddy/config2:/config
-    # network_mode: host
+      - ./caddy/data:/data
+      - ./caddy/config:/config
     networks:
-        - mynetwork
+        - openwebui-bridge
     restart: always
 
+# equivalent:
 #docker run -d  --network=host -e OLLAMA_BASE_URL=http://11.0.0.2:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
@@ -24,14 +24,14 @@ services:
     volumes:
       - open-webui:/app/backend/data
     environment:
-      - OLLAMA_BASE_URL=http://11.0.0.2:11434
+      - OLLAMA_BASE_URL=http://11.0.0.2:11434 # ollama is running on a private VPN tunnel
     networks:
-        - mynetwork
+        - openwebui-bridge
     restart: always
 
 
 networks:
-  mynetwork:
+  openwebui-bridge:
     driver: bridge
 
 volumes:
