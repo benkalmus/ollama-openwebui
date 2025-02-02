@@ -4,7 +4,5 @@ manchesteriswindy.ddns.net {
         transport http {
                 versions h1 h2
         }
-        header_up Connection {>Connection}
-        header_up Upgrade {>Upgrade}
     }
 }
