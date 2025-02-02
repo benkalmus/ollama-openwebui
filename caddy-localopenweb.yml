@@ -1,17 +1,40 @@
 services:
-  nginx:
+  caddy-proxy:
     image: caddy:latest
     container_name: ollama-caddy-localopenweb
     ports:
       - "80:80"
       - "443:443"
-      # - "8080:8080"
     volumes:
       - ./caddy/Caddyfile-localopenweb:/etc/caddy/Caddyfile
-      - ./caddy/data:/data
-      - ./caddy/config:/config
+      - ./caddy/data2:/data
+      - ./caddy/config2:/config
+    # network_mode: host
+    networks:
+        - mynetwork
     restart: always
+
+#docker run -d  --network=host -e OLLAMA_BASE_URL=http://11.0.0.2:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui-local
+    ports:
+      - "8080:8080"
+      - "11434:11434"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://11.0.0.2:11434
+    networks:
+        - mynetwork
+    restart: always
+
+
+networks:
+  mynetwork:
+    driver: bridge
 
 volumes:
   caddy_data:
   caddy_config:
+  open-webui:
