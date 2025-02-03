@@ -13,11 +13,13 @@
 - Access to docker and docker images (may need to login to docker and github)
 - domain name (please remember to rename all instances in this repo)
 
-- In my setup I am already running ollama ( `ollama serve` ) on a private network (11.0.0.0:11434).
-- Inside the `haproxy.cfg` file, you can change the servers that tells haproxy to pick to connect to OLLAMA.
-    - [!NOTE] If you want to run ollama on another machine like me, make sure it is bound to 0.0.0.0 not 127.0.0.1 !! `OLLAMA_HOST=0.0.0.0:11434`
-    - Append the following to `/etc/systemd/system/ollama.service` file:
-    - Environment="OLLAMA_HOST=0.0.0.0:11434"
+- Run Ollama:
+    - If already running, simply change haproxy.cfg to point to local instance (default is `127.0.0.1:11434` )
+    - In my setup I am already running ollama ( `ollama serve` ) on a private network (`11.0.0.0:11434`).
+    - Inside the `haproxy.cfg` file, you can change the servers that tells haproxy to pick to connect to OLLAMA.
+        - [!NOTE] If you want to run ollama on another machine like me, make sure it is bound to 0.0.0.0 not 127.0.0.1 !! `OLLAMA_HOST=0.0.0.0:11434`
+        - Append the following to `/etc/systemd/system/ollama.service` file:
+        - Environment="OLLAMA_HOST=0.0.0.0:11434"
 
 
 
@@ -26,6 +28,19 @@
 Simply run: 
 ```sh
 docker compose -f docker-compose.yml up -d
+```
+
+### Pulling models 
+
+You can open an interactive terminal within your Ollama docker container with:
+```sh
+docker exec -it ollama /bin/bash
+
+# in container: 
+ollama pull <model-name>
+# or run it 
+ollama list
+ollama run <model-name>
 ```
 
 ## How this works? 
@@ -62,3 +77,4 @@ ______
 ## TODOs:
 
 - Logging: currently a little lackluster when debugging
+- Add GPU capabilities to docker compose
