@@ -43,8 +43,8 @@ graph TD
     A[Web] -->|domain-name.com| B[Caddy Proxy]
     B -->|:8080| C[OpenWebUI]
     C -->|:11444| D[HAProxy]
-    D -->|Primary| E[11.0.0.2:11434 (My Home PC Ollama)]
-    D -->|Fallback| F[:11333 (Docker Ollama)]
+    D -->|Primary 11.0.0.2:11434| E[My Home PC Ollama]
+    D -->|Fallback localhost:11333| F[Docker Ollama]
 ```
 
 
