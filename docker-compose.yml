@@ -1,4 +1,5 @@
 services:
+  # This exposes your OpenWebUI to the internet
   caddy-proxy:
     image: caddy:latest
     container_name: ollama-caddy-localopenweb
@@ -10,15 +11,14 @@ services:
       - ./caddy/data:/data
       - ./caddy/config:/config
     networks:
-        - openwebui-bridge
+        - internal-network
     restart: unless-stopped
 
-# equivalent:
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui-local
     ports:
-      - "8080:8080"
+      - "8080:8080" # for debugging, you will be able to call localhost:8080 from your private network
     volumes:
       - open-webui:/app/backend/data
     environment:
@@ -27,38 +27,36 @@ services:
       # ollama is running on a private VPN tunnel
       - OLLAMA_BASE_URL=http://haproxy:11444 
     networks:
-        - openwebui-bridge 
+        - internal-network 
     restart: unless-stopped
 
   haproxy:
     image: haproxy:latest
     container_name: haproxy
-    ports:
-      - "8081:8080"  # Expose the load balancer on port 8081 (adjust as needed)
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
-      - openwebui-bridge
+      - internal-network
     restart: unless-stopped
 
-
+  # Docker instance of ollama. 
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
-      - "11333:11333"
+      - "11333:11333"  # this will allow you to query ollama as well, curl localhost:11333
     networks:
-      - openwebui-bridge
+      - internal-network
     expose:
-      - "11333"         # Expose port 11434 internally
+      - "11333"         # expose port 11333 internally
     environment:
-      # Configure local instance of ollama to run on 11333
+      # Configure local instance of ollama to run on :11333
       - OLLAMA_HOST=0.0.0.0:11333
     restart: unless-stopped
 
 
 networks:
-  openwebui-bridge:
+  internal-network:
     driver: bridge
 
 volumes:
