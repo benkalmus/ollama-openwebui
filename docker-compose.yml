@@ -43,6 +43,8 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
+    volumes:
+      - ./data/ollama-docker:/root/.ollama
     ports:
       - "11333:11333"  # this will allow you to query ollama as well, curl localhost:11333
     networks:
@@ -52,6 +54,14 @@ services:
     environment:
       # Configure local instance of ollama to run on :11333
       - OLLAMA_HOST=0.0.0.0:11333
+    # uncomment for GPU
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [ gpu ]
     restart: unless-stopped
 
 
@@ -60,6 +70,7 @@ networks:
     driver: bridge
 
 volumes:
-  caddy_data:
-  caddy_config:
+  caddy-data:
+  caddy-config:
   open-webui:
+  ollama-docker:
