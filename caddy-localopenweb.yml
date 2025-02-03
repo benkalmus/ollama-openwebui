@@ -24,7 +24,8 @@ services:
     volumes:
       - open-webui:/app/backend/data
     environment:
-      - OLLAMA_BASE_URL=http://11.0.0.2:11434 # ollama is running on a private VPN tunnel
+      - OLLAMA_BASE_URL=http://internal-proxy
+      # - OLLAMA_BASE_URL=http://11.0.0.2:11434 # ollama is running on a private VPN tunnel
     networks:
         - openwebui-bridge
     restart: always
