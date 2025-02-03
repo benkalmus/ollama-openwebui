@@ -1,5 +1,12 @@
 # Running OpenWebUI for OLLAMA and OpenAI with Caddy server! 
 
+## Features:
+- Caddy reverse proxy with HTTPS/SSL
+- OpenWEBUI
+- Load balance multiple ollama instances!
+    - If one of your ollama servers is down, a backup will be used!
+        - for example, if you shut down your home PC, but still want access to OpenWebUI
+
 ## Demo: 
 
 [My self hosted ollama web UI.](https://manchesteriswindy.ddns.net) 
@@ -19,6 +26,25 @@ Inside the compose file, you can change the environment variable that tells open
 Simply run: 
 ```sh
 docker compose -f caddy-localopenweb.yml up -d
+```
+
+## How this works? 
+
+Overview diagram:
+```
+Web → domain-name.com (Caddy)
+    → OpenWebUI :8080
+        → HAProxy :11444 (Load balance)
+            → Primary: 11.0.0.2:11434 (My Home Ollama instance)
+            → Fallback: :11333 (Docker Ollama running on this server)
+```
+```mermaid
+graph TD
+    A[Web] -->|domain-name.com| B[Caddy Proxy]
+    B -->|:8080| C[OpenWebUI]
+    C -->|:11444| D[HAProxy]
+    D -->|Primary| E[11.0.0.2:11434 (My Home PC Ollama)]
+    D -->|Fallback| F[:11333 (Docker Ollama)]
 ```
 
 

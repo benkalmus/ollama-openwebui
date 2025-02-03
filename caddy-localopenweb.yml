@@ -11,24 +11,50 @@ services:
       - ./caddy/config:/config
     networks:
         - openwebui-bridge
-    restart: always
+    restart: unless-stopped
 
 # equivalent:
-#docker run -d  --network=host -e OLLAMA_BASE_URL=http://11.0.0.2:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui-local
     ports:
       - "8080:8080"
-      - "11434:11434"
     volumes:
       - open-webui:/app/backend/data
     environment:
-      - OLLAMA_BASE_URL=http://internal-proxy
-      # - OLLAMA_BASE_URL=http://11.0.0.2:11434 # ollama is running on a private VPN tunnel
+      # set open-webui to call ollama through a loadbalancer. this way we can have multiple instances of ollama
+      # depending on if a server is down. (For example, I might want to keep my home PC turned off at night)
+      # ollama is running on a private VPN tunnel
+      - OLLAMA_BASE_URL=http://haproxy:11444 
     networks:
-        - openwebui-bridge
-    restart: always
+        - openwebui-bridge 
+    restart: unless-stopped
+
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    ports:
+      - "8081:8080"  # Expose the load balancer on port 8081 (adjust as needed)
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - openwebui-bridge
+    restart: unless-stopped
+
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11333:11333"
+    networks:
+      - openwebui-bridge
+    expose:
+      - "11333"         # Expose port 11434 internally
+    environment:
+      # Configure local instance of ollama to run on 11333
+      - OLLAMA_HOST=0.0.0.0:11333
+    restart: unless-stopped
 
 
 networks:

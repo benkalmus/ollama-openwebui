@@ -6,9 +6,3 @@ manchesteriswindy.ddns.net {
         }
     }
 }
- 
-internal-proxy {
-    reverse_proxy 11.0.0.2:11434 {
-
-    }
-}
