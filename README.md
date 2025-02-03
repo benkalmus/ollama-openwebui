@@ -7,9 +7,6 @@
     - If one of your ollama servers is down, a backup will be used!
         - for example, if you shut down your home PC, but still want access to OpenWebUI
 
-## Demo: 
-
-[My self hosted ollama web UI.](https://manchesteriswindy.ddns.net) 
 
 ## Prereqs
 
@@ -25,7 +22,7 @@ Inside the compose file, you can change the environment variable that tells open
 
 Simply run: 
 ```sh
-docker compose -f caddy-localopenweb.yml up -d
+docker compose -f docker-compose.yml up -d
 ```
 
 ## How this works? 

@@ -1,8 +1,0 @@
-manchesteriswindy.ddns.net {
-    # running in docker container, should discover openwebui service via docker's dns
-    reverse_proxy openwebui:8080 {
-        transport http {
-                versions h1 h2
-        }
-    }
-}
