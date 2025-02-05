@@ -1,4 +1,3 @@
-nginx-docker/logs/*
-caddy/config2/*
+caddy/
 data/ollama-docker
 *.log

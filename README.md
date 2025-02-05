@@ -63,6 +63,17 @@ graph TD
 ```
 
 
+## Updating a docker image
+
+OpenWebUI gets frequently updated, to load the latest changes you will need to temporarily down the container. 
+```sh 
+docker pull ghcr.io/open-webui/open-webui:main
+# after docker downloads the new container, remember to run:
+docker compose down 
+docker compose up -d
+#  NOTE: `docker compose restart` will not use the new image
+```
+
 ______
 ## Testing 
 
