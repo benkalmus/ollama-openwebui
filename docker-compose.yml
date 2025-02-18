@@ -8,10 +8,10 @@ services:
       - "443:443"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./caddy/data:/data
-      - ./caddy/config:/config
+      - caddy-data:/data
+      - caddy-config:/config
     networks:
-        - internal-network
+      - internal-network
     restart: unless-stopped
 
   openwebui:
@@ -25,9 +25,9 @@ services:
       # set open-webui to call ollama through a loadbalancer. this way we can have multiple instances of ollama
       # depending on if a server is down. (For example, I might want to keep my home PC turned off at night)
       # ollama is running on a private VPN tunnel
-      - OLLAMA_BASE_URL=http://haproxy:11444 
+      - OLLAMA_BASE_URL=http://haproxy:11444
     networks:
-        - internal-network 
+      - internal-network
     restart: unless-stopped
 
   haproxy:
@@ -39,21 +39,22 @@ services:
       - internal-network
     restart: unless-stopped
 
-  # Docker instance of ollama. 
+  # Docker instance of ollama.
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
     volumes:
-      - ./data/ollama-docker:/root/.ollama
+      - ollama-docker:/root/.ollama
     ports:
-      - "11333:11333"  # this will allow you to query ollama as well, curl localhost:11333
+      - "11333:11333" # this will allow you to query ollama as well, curl localhost:11333
     networks:
       - internal-network
     expose:
-      - "11333"         # expose port 11333 internally
+      - "11333" # expose port 11333 internally
     environment:
       # Configure local instance of ollama to run on :11333
       - OLLAMA_HOST=0.0.0.0:11333
+    restart: unless-stopped
     # uncomment for GPU
     # deploy:
     #   resources:
@@ -62,8 +63,20 @@ services:
     #         - driver: nvidia
     #           count: 1
     #           capabilities: [ gpu ]
-    restart: unless-stopped
 
+  # Text To Speech Model (Kokoro)
+  # docker run -d -p 8880:8880 -p 7860:7860 remsky/kokoro-fastapi:latest
+  # kokoro-tts:
+  #   image: remsky/kokoro-fastapi:latest
+  #   container_name: kokoro-tts
+  #   networks:
+  #     - internal-network
+  #   ports:
+  #     - "8880:8880"
+  #   restart: unless-stopped
+  #   group_add:
+  #     - "video"
+  #     - "render"
 
 networks:
   internal-network:
