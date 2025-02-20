@@ -19,6 +19,8 @@ services:
     container_name: open-webui-local
     ports:
       - "8080:8080" # for debugging, you will be able to call localhost:8080 from your private network
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # NOTE: Dont forget to allow port 11469 with ufw!!!
     volumes:
       - open-webui:/app/backend/data
     environment:
