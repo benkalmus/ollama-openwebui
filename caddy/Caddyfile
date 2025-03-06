@@ -5,4 +5,10 @@ manchesteriswindy.ddns.net {
                 versions h1 h2
         }
     }
+
+
+    # wake on lan service running on esprimo
+    # reverse_proxy /wake/* 10.0.0.3:8000 
+    @wake path /wake/*
+    reverse_proxy @wake 10.0.0.3:8000
 }
