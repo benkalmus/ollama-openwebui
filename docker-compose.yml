@@ -16,6 +16,7 @@ services:
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
+    # image: ghcr.io/open-webui/open-webui:0.5.15   # tag an image with `docker tag <hash> ghcr.io/open-webui/open-webui:0.5.15`
     container_name: open-webui-local
     ports:
       - "8080:8080" # for debugging, you will be able to call localhost:8080 from your private network
@@ -65,6 +66,21 @@ services:
     #         - driver: nvidia
     #           count: 1
     #           capabilities: [ gpu ]
+  # jupyter:
+  #   image: quay.io/jupyter/base-notebook
+  #   # build:
+  #   #   context: jupyter-workspace
+  #   #   dockerfile: Dockerfile
+  #   ports:
+  #     - "11469:11469"
+  #   networks:
+  #     - internal-network
+  #   volumes:
+  #     - jupyter-data:/app
+  #   environment:
+  #     - PASSWORD=jupyter_test
+  #     - JUPYTER_TOKEN=jupyter_test
+  #     - JUPYTER_PORT=11469
 
   # Text To Speech Model (Kokoro)
   # docker run -d -p 8880:8880 -p 7860:7860 remsky/kokoro-fastapi:latest
@@ -89,3 +105,4 @@ volumes:
   caddy-config:
   open-webui:
   ollama-docker:
+  # jupyter-data:
