@@ -113,3 +113,14 @@ alloy
 tts-1
 
 ### Text to speech (kokoro)
+
+---
+
+## Troubleshooting
+
+Don't forget to allow firewall (e.g. jupyterlab) between the docker internal networks and host.
+If you're not sure, you can always inspect with `tcpdump -i any port N -nn`
+
+```sh
+sudo ufw allow from 172.18.0.0/16 to any port 11469 proto tcp
+```
