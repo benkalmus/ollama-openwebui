@@ -8,7 +8,7 @@ manchesteriswindy.ddns.net {
 
 
     # wake on lan service running on esprimo
-    # reverse_proxy /wake/* 10.0.0.3:8000 
+    # reverse_proxy /wake/* 11.0.0.3:8000 
     @wake path /wake/*
-    reverse_proxy @wake 10.0.0.3:8000
+    reverse_proxy @wake 11.0.0.3:8000
 }

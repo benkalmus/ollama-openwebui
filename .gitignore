@@ -1,4 +1,3 @@
-caddy/
 data/ollama-docker
 *.log
 .venv
