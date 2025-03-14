@@ -12,6 +12,7 @@ services:
       - caddy-config:/config
     networks:
       - internal-network
+      - shared-network
     restart: unless-stopped
 
   openwebui:
@@ -31,6 +32,7 @@ services:
       - OLLAMA_BASE_URL=http://haproxy:11444
     networks:
       - internal-network
+      - shared-network
     restart: unless-stopped
 
   haproxy:
@@ -40,6 +42,7 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
       - internal-network
+      - shared-network
     restart: unless-stopped
 
   # Docker instance of ollama.
@@ -52,6 +55,7 @@ services:
       - "11333:11333" # this will allow you to query ollama as well, curl localhost:11333
     networks:
       - internal-network
+      - shared-network
     expose:
       - "11333" # expose port 11333 internally
     environment:
@@ -70,6 +74,8 @@ services:
 networks:
   internal-network:
     driver: bridge
+  shared-network:
+    external: true
 
 volumes:
   caddy-data:
