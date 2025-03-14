@@ -66,35 +66,6 @@ services:
     #         - driver: nvidia
     #           count: 1
     #           capabilities: [ gpu ]
-  # jupyter:
-  #   image: quay.io/jupyter/base-notebook
-  #   # build:
-  #   #   context: jupyter-workspace
-  #   #   dockerfile: Dockerfile
-  #   ports:
-  #     - "11469:11469"
-  #   networks:
-  #     - internal-network
-  #   volumes:
-  #     - jupyter-data:/app
-  #   environment:
-  #     - PASSWORD=jupyter_test
-  #     - JUPYTER_TOKEN=jupyter_test
-  #     - JUPYTER_PORT=11469
-
-  # Text To Speech Model (Kokoro)
-  # docker run -d -p 8880:8880 -p 7860:7860 remsky/kokoro-fastapi:latest
-  # kokoro-tts:
-  #   image: remsky/kokoro-fastapi:latest
-  #   container_name: kokoro-tts
-  #   networks:
-  #     - internal-network
-  #   ports:
-  #     - "8880:8880"
-  #   restart: unless-stopped
-  #   group_add:
-  #     - "video"
-  #     - "render"
 
 networks:
   internal-network:
