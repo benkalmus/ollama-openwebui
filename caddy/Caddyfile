@@ -1,4 +1,4 @@
-manchesteriswindy.ddns.net {
+ai.benkalmus.com {
     # running in docker container, should discover openwebui service via docker's dns
     reverse_proxy openwebui:8080 {
         transport http {
@@ -11,4 +11,14 @@ manchesteriswindy.ddns.net {
     # reverse_proxy /wake/* 11.0.0.3:8000 
     @wake path /wake/*
     reverse_proxy @wake 11.0.0.3:8000
+}
+
+wol.benkalmus.com {
+    # wake on lan service running on esprimo via wireguard
+    reverse_proxy 11.0.0.3:8000
+}
+
+n8n.benkalmus.com {
+    # running in docker container, should discover openwebui service via docker's dns
+    reverse_proxy n8n:5678
 }
