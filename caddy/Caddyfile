@@ -1,3 +1,7 @@
+{
+    debug   # Enables debug mode for more detailed logging
+}
+
 ai.benkalmus.com {
     # running in docker container, should discover openwebui service via docker's dns
     reverse_proxy openwebui:8080 {
@@ -21,4 +25,46 @@ wol.benkalmus.com {
 n8n.benkalmus.com {
     # running in docker container, should discover openwebui service via docker's dns
     reverse_proxy n8n:5678
+}
+
+## =================
+## Portfolio Website
+## =================
+benkalmus.com, www.benkalmus.com {
+#     log {
+#         output stderr
+#         level DEBUG
+#         format console
+#     }
+
+    # Serve the static homepage
+    handle_path /* {
+        root * /app
+        file_server
+        try_files {path} {path}/ /index.html
+    }
+}
+
+blog.benkalmus.com {
+    log {
+        output stderr
+        level DEBUG
+        format console
+    }
+
+    # Path to Static Hugo Blog
+    handle {
+        root * /blog
+        file_server
+        try_files {path} {path}/ /index.html
+    }
+}
+
+api.benkalmus.com {
+
+    reverse_proxy /api/email/submit* http://flask-email:5555 {
+        transport http {
+            versions 1.1
+        }
+    }
 }

@@ -10,6 +10,8 @@ services:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - caddy-data:/data
       - caddy-config:/config
+      - /home/benkalmus/work/portfolio-web-bootstrap:/app
+      - /home/benkalmus/work/hugo-blog/production/public:/blog
     networks:
       - internal-network
       - shared-network
