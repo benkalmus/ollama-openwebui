@@ -12,6 +12,8 @@ services:
       - caddy-config:/config
       - /home/benkalmus/work/portfolio-web-bootstrap:/app
       - /home/benkalmus/work/hugo-blog/production/public:/blog
+      # certificates for xray
+      - /opt/certs:/data/caddy/certificates/acme-v02.api.letsencrypt.org-directory/pass.benkalmus.com
     networks:
       - internal-network
       - shared-network

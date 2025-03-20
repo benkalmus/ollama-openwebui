@@ -12,7 +12,7 @@ ai.benkalmus.com {
 
 
     # wake on lan service running on esprimo
-    # reverse_proxy /wake/* 11.0.0.3:8000 
+    # 11.0.0.3:8000/wake/*
     @wake path /wake/*
     reverse_proxy @wake 11.0.0.3:8000
 }
@@ -25,6 +25,10 @@ wol.benkalmus.com {
 n8n.benkalmus.com {
     # running in docker container, should discover openwebui service via docker's dns
     reverse_proxy n8n:5678
+}
+
+flow.benkalmus.com {
+    reverse_proxy flowise:3000
 }
 
 ## =================
@@ -66,5 +70,36 @@ api.benkalmus.com {
         transport http {
             versions 1.1
         }
+    }
+}
+
+## =================
+## Xray VPN
+## =================
+pass.benkalmus.com {
+    log {
+        level DEBUG
+    }
+    root * /app
+    # tls CA.crt priv.key
+    
+    route /ws {
+        # trim /ws path when proxy-ing
+        rewrite /ws* /
+        reverse_proxy xray:2001 {
+            header_up Host {host}  # Pass the original Host header
+            header_up X-Real-IP {remote_host}  # Pass the real client IP
+            header_up X-Forwarded-For {remote_host}  # Another client IP header
+            header_up X-Forwarded-Proto {scheme}  # Pass the protocol (http or https)
+            header_up X-Forwarded-Port {server_port}  # Add the original port too.
+
+            # transport http {
+            #     versions h2c
+            # }
+        }
+    }
+
+    route {
+        file_server
     }
 }
