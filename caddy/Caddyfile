@@ -3,17 +3,23 @@
 }
 
 ai.benkalmus.com {
-    # running in docker container, should discover openwebui service via docker's dns
-    reverse_proxy openwebui:8080 {
-        transport http {
+    # adding kokoro web ui passthrough for TTS
+    handle /web* {
+        reverse_proxy haproxy:8880 {
+            transport http {
                 versions h1 h2
+            }
         }
     }
 
-
-    # wake on lan service running on esprimo
-    @wake path /wake/*
-    reverse_proxy @wake 10.10.10.3:8000
+    handle {
+        # running in docker container, should discover openwebui service via docker's dns
+        reverse_proxy openwebui:8080 {
+            transport http {
+                versions h1 h2
+            }
+        }
+    }
 }
 
 wol.benkalmus.com {
