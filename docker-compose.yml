@@ -72,8 +72,23 @@ services:
     #     reservations:
     #       devices:
     #         - driver: nvidia
-    #           count: 1
+    #           count: all
     #           capabilities: [ gpu ]
+  kokoro-tts:
+    container_name: kokoro-tts
+    restart: unless-stopped
+    networks:
+      - internal-network
+    ports:
+      - 8880:8880
+    image: ghcr.io/remsky/kokoro-fastapi-gpu:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
 networks:
   internal-network:
