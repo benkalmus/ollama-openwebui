@@ -12,14 +12,13 @@ ai.benkalmus.com {
 
 
     # wake on lan service running on esprimo
-    # reverse_proxy /wake/* 11.0.0.3:8000 
     @wake path /wake/*
-    reverse_proxy @wake 11.0.0.3:8000
+    reverse_proxy @wake 10.10.10.3:8000
 }
 
 wol.benkalmus.com {
     # wake on lan service running on esprimo via wireguard
-    reverse_proxy 11.0.0.3:8000
+    reverse_proxy 10.10.10.3:8000
 }
 
 n8n.benkalmus.com {
