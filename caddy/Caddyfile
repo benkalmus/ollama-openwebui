@@ -3,28 +3,18 @@
 }
 
 ai.benkalmus.com {
-    # adding kokoro web ui passthrough for TTS
-    handle /web* {
-        reverse_proxy haproxy:8880 {
-            transport http {
-                versions h1 h2
-            }
-        }
-    }
-
-    handle {
-        # running in docker container, should discover openwebui service via docker's dns
-        reverse_proxy openwebui:8080 {
-            transport http {
-                versions h1 h2
-            }
-        }
-    }
+    # running in docker container, will be discovered via docker's dns
+    reverse_proxy openwebui:8080 
+    # {
+    #     transport http {
+    #         versions h1 h2
+    #     }
+    # }
 }
 
 wol.benkalmus.com {
-    # wake on lan service running on esprimo via wireguard
-    reverse_proxy 10.10.10.3:8000
+    # wake on lan service running on either my rpi4 or esprimo via wireguard
+    reverse_proxy haproxy:8888
 }
 
 n8n.benkalmus.com {
@@ -40,6 +30,7 @@ flow.benkalmus.com {
 ## Portfolio Website
 ## =================
 benkalmus.com, www.benkalmus.com {
+
 #     log {
 #         output stderr
 #         level DEBUG
@@ -76,6 +67,12 @@ api.benkalmus.com {
             versions 1.1
         }
     }
+    # TODO: figure why the f this isn't working. add logs to this and flask email app
+    header Access-Control-Allow-Origin "*"
+    header Access-Control-Allow-Methods "POST"
+    header Access-Control-Allow-Headers "Content-Type, Authorization"
+
+    header /api/* Access-Control-Allow-Origin "https://benkalmus.com"
 }
 
 ## =================
@@ -86,21 +83,26 @@ pass.benkalmus.com {
         level DEBUG
     }
     root * /app
-    # tls CA.crt priv.key
-    
+
     route /ws {
-        # trim /ws path when proxy-ing
-        rewrite /ws* /
         reverse_proxy xray:2001 {
             header_up Host {host}  # Pass the original Host header
             header_up X-Real-IP {remote_host}  # Pass the real client IP
             header_up X-Forwarded-For {remote_host}  # Another client IP header
             header_up X-Forwarded-Proto {scheme}  # Pass the protocol (http or https)
             header_up X-Forwarded-Port {server_port}  # Add the original port too.
+        }
+    }
 
-            # transport http {
-            #     versions h2c
-            # }
+    # keeps path
+    handle /sselv {
+        reverse_proxy xray:2002 {
+            header_up Host {http.request.host}  # Pass the original Host header
+            #header_up Host {remote_host}  # Pass the original Host header
+            header_up X-Real-IP {remote_host}  # Pass the real client IP
+            header_up X-Forwarded-For {remote_host}  # Another client IP header
+            header_up X-Forwarded-Proto {scheme}  # Pass the protocol (http or https)
+            header_up X-Forwarded-Port {server_port}  # Add the original port too.
         }
     }
 
