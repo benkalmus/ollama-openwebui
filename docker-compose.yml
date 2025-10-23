@@ -21,12 +21,12 @@ services:
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
-    # image: ghcr.io/open-webui/open-webui:0.5.15   # tag an image with `docker tag <hash> ghcr.io/open-webui/open-webui:0.5.15`
     container_name: open-webui-local
     ports:
       - "8080:8080" # for debugging, you will be able to call localhost:8080 from your private network
     extra_hosts:
       - "host.docker.internal:host-gateway" # NOTE: Dont forget to allow port 11469 with ufw!!!
+      - "kubuntu.local:192.168.100.13"
     volumes:
       - open-webui:/app/backend/data
     environment:
@@ -48,6 +48,10 @@ services:
     networks:
       - internal-network
       - shared-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "kubuntu.local:192.168.100.14"
+      - "esprimo.local:192.168.100.13"
     restart: unless-stopped
 
   # Docker instance of ollama.
