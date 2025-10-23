@@ -2,7 +2,7 @@
     debug   # Enables debug mode for more detailed logging
 }
 
-ai.benkalmus.com {
+localhost, ai.benkalmus.com {
     # running in docker container, will be discovered via docker's dns
     reverse_proxy openwebui:8080 
     # {
@@ -30,13 +30,11 @@ flow.benkalmus.com {
 ## Portfolio Website
 ## =================
 benkalmus.com, www.benkalmus.com {
-
-#     log {
-#         output stderr
-#         level DEBUG
-#         format console
-#     }
-
+     log {
+         output stderr
+         level DEBUG
+         format console
+     }
     # Serve the static homepage
     handle_path /* {
         root * /app
@@ -98,11 +96,6 @@ pass.benkalmus.com {
     handle /sselv {
         reverse_proxy xray:2002 {
             header_up Host {http.request.host}  # Pass the original Host header
-            #header_up Host {remote_host}  # Pass the original Host header
-            header_up X-Real-IP {remote_host}  # Pass the real client IP
-            header_up X-Forwarded-For {remote_host}  # Another client IP header
-            header_up X-Forwarded-Proto {scheme}  # Pass the protocol (http or https)
-            header_up X-Forwarded-Port {server_port}  # Add the original port too.
         }
     }
 
