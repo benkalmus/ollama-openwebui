@@ -1,3 +1,4 @@
 data/ollama-docker
 *.log
 .venv
+old-images

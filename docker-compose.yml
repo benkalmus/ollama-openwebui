@@ -40,6 +40,32 @@ services:
       - shared-network
     restart: unless-stopped
 
+  openterminal:
+    image: ghcr.io/open-webui/open-terminal
+    container_name: open-terminal
+    ports:
+      - "8081:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "kubuntu.local:192.168.100.13"
+    volumes:
+      - open-terminal:/home/user
+    environment:
+      - OPEN_TERMINAL_API_KEY=sk-8117d4b7-2c7e-4ec4-afe6-8130d10c379c
+      - OPEN_TERMINAL_MULTI_USER=true
+      # space separated list
+      # - OPEN_TERMINAL_PACKAGES=""
+      # - OPEN_TERMINAL_PIP_PACKAGES="lixplore-cli "
+    networks:
+      - internal-network
+      - shared-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 16G
+
   haproxy:
     image: haproxy:latest
     container_name: haproxy
@@ -108,5 +134,6 @@ volumes:
   caddy-data:
   caddy-config:
   open-webui:
+  open-terminal:
   ollama-docker:
   # jupyter-data:
