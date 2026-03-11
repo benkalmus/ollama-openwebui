@@ -58,20 +58,20 @@ blog.benkalmus.com {
     }
 }
 
-api.benkalmus.com {
-
-    reverse_proxy /api/email/submit* http://flask-email:5555 {
-        transport http {
-            versions 1.1
-        }
-    }
-    # TODO: figure why the f this isn't working. add logs to this and flask email app
-    header Access-Control-Allow-Origin "*"
-    header Access-Control-Allow-Methods "POST"
-    header Access-Control-Allow-Headers "Content-Type, Authorization"
-
-    header /api/* Access-Control-Allow-Origin "https://benkalmus.com"
-}
+# api.benkalmus.com {
+# 
+#     reverse_proxy /api/email/submit* http://flask-email:5555 {
+#         transport http {
+#             versions 1.1
+#         }
+#     }
+#     # TODO: figure why the f this isn't working. add logs to this and flask email app
+#     header Access-Control-Allow-Origin "*"
+#     header Access-Control-Allow-Methods "POST"
+#     header Access-Control-Allow-Headers "Content-Type, Authorization"
+# 
+#     header /api/* Access-Control-Allow-Origin "https://benkalmus.com"
+# }
 
 ## =================
 ## Xray VPN
