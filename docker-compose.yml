@@ -66,6 +66,25 @@ services:
           cpus: "2.0"
           memory: 16G
 
+  docling-serve:
+    image: quay.io/docling-project/docling-serve:latest
+    container_name: docling-serve
+    ports:
+      - "5001:5001"
+    environment:
+      - DOCLING_SERVE_ENABLE_UI=true
+      - DOCLING_SERVE_ENABLE_REMOTE_SERVICES=true
+      - DOCLING_SERVE_MAX_SYNC_WAIT=600
+      - DOCLING_SERVE_ENG_LOC_NUM_WORKERS=2
+      - OMP_NUM_THREADS=4
+      - MKL_NUM_THREADS=4
+      - UVICORN_WORKERS=1
+    volumes:
+      - docling-artifacts:/app/data
+    networks:
+      - internal-network
+    restart: unless-stopped
+
   haproxy:
     image: haproxy:latest
     container_name: haproxy
@@ -136,3 +155,4 @@ volumes:
   open-webui:
   open-terminal:
   ollama-docker:
+  docling-artifacts:
