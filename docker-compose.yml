@@ -81,30 +81,30 @@ services:
     restart: unless-stopped
 
   # Docker instance of ollama.
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    volumes:
-      - ollama-docker:/root/.ollama
-    ports:
-      - "11333:11333" # this will allow you to query ollama as well, curl localhost:11333
-    networks:
-      - internal-network
-      - shared-network
-    expose:
-      - "11333" # expose port 11333 internally
-    environment:
-      # Configure local instance of ollama to run on :11333
-      - OLLAMA_HOST=0.0.0.0:11333
-    restart: unless-stopped
-    # uncomment for GPU
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [ gpu ]
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   volumes:
+  #     - ollama-docker:/root/.ollama
+  #   ports:
+  #     - "11333:11333" # this will allow you to query ollama as well, curl localhost:11333
+  #   networks:
+  #     - internal-network
+  #     - shared-network
+  #   expose:
+  #     - "11333" # expose port 11333 internally
+  #   environment:
+  #     # Configure local instance of ollama to run on :11333
+  #     - OLLAMA_HOST=0.0.0.0:11333
+  #   restart: unless-stopped
+  # uncomment for GPU
+  # deploy:
+  #   resources:
+  #     reservations:
+  #       devices:
+  #         - driver: nvidia
+  #           count: all
+  #           capabilities: [ gpu ]
   # uncomment for kokoro tts locally
   # kokoro-tts:
   #   container_name: kokoro-tts
@@ -136,4 +136,3 @@ volumes:
   open-webui:
   open-terminal:
   ollama-docker:
-  # jupyter-data:
