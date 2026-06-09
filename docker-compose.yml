@@ -81,6 +81,7 @@ services:
       - "kubuntu.local:192.168.100.14"
       - "esprimo.local:192.168.100.13"
     restart: unless-stopped
+
   # Docker instance of ollama.
   # ollama:
   #   image: ollama/ollama:latest
