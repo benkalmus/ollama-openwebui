@@ -6,10 +6,12 @@ services:
       - "8080:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "cachyos:192.168.100.17"
     volumes:
       - open-webui:/app/backend/data
     environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OPENAI_API_BASE_URL=http://cachyos:9900/v1
+      - OPENAI_API_KEY=none
       - WHISPER_MODEL_AUTO_UPDATE=true
       - BYPASS_MODEL_ACCESS_CONTROL=true
     networks:
