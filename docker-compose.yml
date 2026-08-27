@@ -1,6 +1,6 @@
 services:
   openwebui:
-    image: ghcr.io/open-webui/open-webui:main
+    build: .
     container_name: open-webui-local
     ports:
       - "8080:8080"
